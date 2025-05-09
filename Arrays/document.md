@@ -1,0 +1,7 @@
+- Longest Subarray with sum k [Positives + 0's and Positives + Negatives + 0's]
+- Union and Intersection of Sorted Array
+- Two Sum 
+- Rotate Array
+- Sort an Array of 0's , 1's and 2's (Dutch National Flag Algorithm)
+- Majority Element (Moore's Voting Algorithm)
+- Maximum Subarray Sum (Kadane's Algorithm)
