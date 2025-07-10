@@ -3,5 +3,8 @@
     "C_Cpp.errorSquiggles": "disabled",
     "code-runner.executorMap": {
         "cpp": "cd $dir && filename.exe"
+    },
+    "files.associations": {
+        "iostream": "cpp"
     }
 }
