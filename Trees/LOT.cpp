@@ -3,6 +3,7 @@
 #include <iostream>
 #include <queue>
 #include <vector>
+#include <map>
 using namespace std;
 
 class Node
@@ -109,6 +110,45 @@ int maxDepthBFS (Node* root) {
     return depth;
 }
 
+// Tc : O(n), Sc : O(2n)
+vector <int> topViewBT (Node* root) {
+    vector <int> ans;
+    if (root == NULL) {
+        return ans;
+    }
+
+    queue <pair <Node*, int>> q;
+    // pair => (Node*, line)
+    map <int, int> mpp;
+
+    // Initially push the root node to q
+    q.push ({root, 0});
+
+    while (!q.empty()) {
+        // If node corresponding to a line didn't exist then push it into q
+        // Check for left and right ptr nodes and push it to queue
+        auto it = q.front();
+        q.pop();
+        Node* node = it.first;
+        int line = it.second;
+
+        if (mpp.find (line) == mpp.end()) mpp[line] = node -> data;
+
+        if (node -> left != nullptr) {
+            q.push ({node -> left, line-1});
+        }
+
+        if (node -> right != nullptr) {
+            q.push ({node -> right, line+1});
+        }
+    }
+
+    for (auto it : mpp) {
+        ans.push_back(it.second);
+    }
+
+    return ans;
+}
 
 int main()
 {
@@ -132,7 +172,14 @@ int main()
 
     int heightOfBT = maxDepth (root);
     //cout << "Height of the binary tree : " << heightOfBT;
-    cout << "height : "<< maxDepthBFS (root);
+    cout << "height : "<< maxDepthBFS (root) << endl;
+
+    // Top View of the Binary Tree
+    vector <int> topView = topViewBT (root);
+    for (int i = 0; i < topView.size(); i++) {
+        cout << topView [i] << " ";
+    }
+    cout << endl;
 
     return 0;
 }
