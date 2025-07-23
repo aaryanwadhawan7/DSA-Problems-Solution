@@ -150,6 +150,126 @@ vector <int> topViewBT (Node* root) {
     return ans;
 }
 
+
+// Tc : O (n)
+// Sc : O (n) [Incomplete binary tree, due to increased in the # of leaf nodes complexity increases]
+vector <int> zigZagTraversal (Node* root) {
+    vector <int> ans;
+    if (root == NULL) {
+        return ans;
+    }
+
+    queue <Node*> q;
+    q.push (root);
+
+    bool leftToRight = true;
+
+    while (!q.empty ()) {
+        int qSize = q.size();
+        vector <int> level(qSize);
+
+        for (int i = 0; i < qSize; i++) {
+            Node* curr = q.front ();
+            q.pop ();
+
+            // push curr data
+            int index = (leftToRight) ? i : qSize - 1 - i;
+            level[index] = curr -> data;
+
+            if (curr -> left != nullptr) {
+                q.push (curr -> left);
+            }
+
+            if (curr -> right != nullptr) {
+                q.push (curr -> right);
+            }
+        }
+        // after each level we have to change the order of pushing the nodes val into vector
+        leftToRight = !leftToRight;
+        for (auto it : level) {
+            ans.push_back(it);
+        }
+    }
+
+    return ans;
+}
+
+
+void leftBoundaryTraversal (Node* root, vector<int> &ans) {
+    // curr node is nullptr
+    if (root == NULL) {
+        return;
+    }
+
+    // curr node is leaf node
+    if (root -> left == NULL && root -> right == NULL) {
+        return;
+    }
+
+
+    // curr node is not nullptr and it is not leaf node
+    ans.push_back(root -> data);
+
+   if (root -> left != nullptr) {
+    leftBoundaryTraversal (root -> left, ans);
+   } else {
+    leftBoundaryTraversal (root -> right, ans);
+   }
+}
+
+
+void traversingAllLeafNodes (Node* root, vector<int> &ans) {
+    if (root == NULL) {
+        // backtracking
+        return;
+    }
+
+    if (root -> left == NULL && root -> right == NULL) {
+        ans.push_back (root -> data);
+    }
+
+    // curr node is not leaf node
+    traversingAllLeafNodes (root -> left, ans);
+    traversingAllLeafNodes (root -> right, ans);
+}
+
+
+void rightBoundaryTraversal (Node* root, vector<int> &ans) {
+    Node* originalRoot = root;
+
+    if (root == NULL || (root -> left == NULL && root -> right == NULL)) {
+        return;
+    }
+
+    if (root -> right != nullptr) {
+        rightBoundaryTraversal (root -> right, ans);
+    } else {
+        rightBoundaryTraversal (root -> left, ans);
+    }
+
+    // backtracking
+    ans.push_back (root -> data);
+}
+
+
+vector <int> boundaryTraversal (Node* root) {
+    vector <int> ans;
+    if (root == NULL) {
+        return ans;
+    }
+
+    // left part except leaf nodes
+    leftBoundaryTraversal (root, ans);
+    // printing all leaf nodes
+    traversingAllLeafNodes (root, ans);
+    // right part except leaf nodes
+    rightBoundaryTraversal (root, ans);
+
+    return ans;
+}
+
+
+
 int main()
 {
     Node *root = new Node(1);
@@ -162,6 +282,7 @@ int main()
 
     vector<vector<int>> res = lot(root);
 
+    // LOT 
     cout << "Level Order Traversal : " << endl;
     for (int i = 0; i < res.size(); i++) {
         for (int j = 0; j < res[i].size(); j++) {
@@ -170,14 +291,37 @@ int main()
     }
     cout << endl;
 
+
+    // Height of BT
     int heightOfBT = maxDepth (root);
     //cout << "Height of the binary tree : " << heightOfBT;
     cout << "height : "<< maxDepthBFS (root) << endl;
 
+
+
     // Top View of the Binary Tree
+    cout << "Top View of BT : " << endl;
     vector <int> topView = topViewBT (root);
     for (int i = 0; i < topView.size(); i++) {
         cout << topView [i] << " ";
+    }
+    cout << endl;
+
+
+    // Zig Zag Traversal
+    cout << "Zig Zag Traversal : " << endl;
+    vector <int> zigZag = zigZagTraversal (root);
+    for (auto it : zigZag) {
+        cout << it << " ";
+    }
+    cout << endl;
+
+
+    // Boundary Traversal 
+    cout << "Boundary Traversal : " << endl;
+    vector <int> bt = boundaryTraversal (root);
+    for (auto it : bt) {
+        cout << it << " ";
     }
     cout << endl;
 
