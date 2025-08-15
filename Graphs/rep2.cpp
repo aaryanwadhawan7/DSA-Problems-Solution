@@ -2,6 +2,7 @@
 #include <vector>
 using namespace std;
 
+// sc : O(2 * E)
 int main() {
     int N, M;
     cin >> N >> M;
@@ -12,6 +13,7 @@ int main() {
         int firstNode, secondNode;
         cin >> firstNode >> secondNode;
         adj[firstNode].push_back(secondNode);
+        // Directed Graph just remove below line of code 
         adj[secondNode].push_back(firstNode); // undirected graph
     }
 

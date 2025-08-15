@@ -14,6 +14,7 @@ void print(const vector<vector<int>> &adj)
     }
 }
 
+// sc : O (n * n)
 int main()
 {
 
